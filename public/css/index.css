@@ -1,0 +1,23 @@
+/*.cwts{color: red;}*/
+li{list-style: none;}
+.page>.clear{display: flex; width: 300px;justify-content: space-around;}
+.previous,.next{
+	width: 80px;
+	height: 30px;
+	background: orange;
+	color: white;
+}
+.tjpl{
+	margin:20px 0 20px 0; 
+}
+.qh{
+	cursor: pointer;
+	margin-top: 10px;
+}
+/*导航栏*/
+.checked{
+	border-bottom: 1px solid red;
+}
+.menu li:hover{
+	border-bottom: 1px solid red;
+}

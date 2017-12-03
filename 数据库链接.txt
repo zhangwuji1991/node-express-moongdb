@@ -1,0 +1,1 @@
+执行doc命令：mongod --dbpath=G:\blong\db --port=27018
