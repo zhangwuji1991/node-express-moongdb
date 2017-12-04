@@ -18,6 +18,3 @@ li{list-style: none;}
 .checked{
 	border-bottom: 1px solid red;
 }
-.menu li:hover{
-	border-bottom: 1px solid red;
-}

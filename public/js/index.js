@@ -1,3 +1,5 @@
+
+
 var $regiser = $('.regiser');
 var $dl      = $('.dl')
 //注册
