@@ -1,6 +1,8 @@
 var express  = require('express');
 var router   = express.Router();
 var user = require('../models/User');
+var multer = require('multer');
+var path = require('path');
 // 设置统一返回格式
 router.use(function(req,res,next){
 	responseData = {
@@ -11,6 +13,7 @@ router.use(function(req,res,next){
 })
 //个人中心
 router.get('/',function(req,res,next){
+    console.log(req.userInfo)
 	res.render('user/index',{
 		userInfo: req.userInfo
 	})
@@ -28,12 +31,58 @@ router.get('/user',function(req,res,next){
 		userInfo: req.userInfo
 	})
 })
+//上传图片
+router.get('/tp',function(req,res,next){
 
+    user.findOne({
+        username: req.userInfo.username
+    }).then(function(users){
+        console.log(users)
+        res.render('user/tp',{
+            user: users
+        })
+    })
+})
+
+// 获取上传图片保存到其他地方
+var storage = multer.diskStorage({
+    //保存地址
+    destination: function (req, file, cb) {
+        cb(null, path.resolve('public/uploads'));
+    },
+    //文件名
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+var upload = multer({storage: storage});
+router.post('/profile', upload.single('avatar'), function(req, res, next){
+    // res.send({
+    //     err: null,
+    //     filePath: '/public/uploads/' + path.basename(req.file.path)
+    // });
+    user.findOne({
+        username: req.userInfo.username
+    }).then(function(users){
+        console.log(users)
+        console.log('/public/uploads/' + path.basename(req.file.path))
+        responseData.code = 0;
+        responseData.message = "头像上传成功";
+        responseData.filePath= '/public/uploads/' + path.basename(req.file.path)
+        res.json(responseData);
+        //保存数据到数据库中
+        return user.update({
+            _id:users._id
+        },{
+            headImg:'/public/uploads/' + path.basename(req.file.path)
+        })
+    })
+});
 //修改密码
 router.post('/update',function(req,res,next){
 	//判断输入的是否为新密码
-	var oldpass = req.body.oldpass
-	var newpass = req.body.newpass
+	var oldpass = req.body.oldpass;
+	var newpass = req.body.newpass;
 	//查询用户账号及密码
 	user.findOne({
 		username: req.userInfo.username

@@ -10,5 +10,8 @@ module.exports = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
-	headImg: String
+	headImg: {
+        type: String,
+        default: ''
+    }
 })

@@ -1,5 +1,4 @@
 // 应用程序的启动入口文件
-
 var express     = require("express");//加载express模块
 var mongoose    = require('mongoose');//加载数据库模块
 var bodyParser  = require('body-parser');//用来处理post提交的数据
@@ -60,6 +59,7 @@ app.use('/admin',require('./routers/admin'));
 app.use('/users',require('./routers/user'));
 app.use('/api',require('./routers/api'));
 app.use('/',require('./routers/main'));
+
 mongoose.Promise = global.Promise;
 //监听http请求
 mongoose.connect("mongodb://localhost:27018/blog",function(err){
