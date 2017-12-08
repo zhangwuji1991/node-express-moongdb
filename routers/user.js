@@ -56,16 +56,12 @@ var storage = multer.diskStorage({
     }
 });
 var upload = multer({storage: storage});
+
 router.post('/profile', upload.single('avatar'), function(req, res, next){
-    // res.send({
-    //     err: null,
-    //     filePath: '/public/uploads/' + path.basename(req.file.path)
-    // });
+
     user.findOne({
         username: req.userInfo.username
     }).then(function(users){
-        console.log(users)
-        console.log('/public/uploads/' + path.basename(req.file.path))
         responseData.code = 0;
         responseData.message = "头像上传成功";
         responseData.filePath= '/public/uploads/' + path.basename(req.file.path)
@@ -109,5 +105,4 @@ router.post('/update',function(req,res,next){
 });
 
 //发表博客
-
 module.exports = router;

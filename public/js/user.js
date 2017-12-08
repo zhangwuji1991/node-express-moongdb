@@ -23,10 +23,9 @@ $('#udpass').on('click',function(){
 		});
 	}
 });
-
-
 //上传图片
 function handle() {
+    alert(1)
     let file = document.getElementById("choose").files[0];
     let formData = new FormData();
     formData.append("avatar", file);

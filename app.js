@@ -54,12 +54,25 @@ app.use(function(req,res,next){
 		next();
 	}
 })
+//app.js
+//设置跨域第一种方式
+// app.all('*', function(req, res, next) {
+//     res.header("Access-Control-Allow-Origin", "*");
+//     res.header("Access-Control-Allow-Headers", "X-Requested-With");
+//     res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+//     res.header("X-Powered-By",' 3.2.1')
+//     res.header("Content-Type", "application/json;charset=utf-8");
+//     next();
+// });
+//设置跨域第二种方式
+//app.js
+var cors = require('cors');
+app.use(cors());
 // 根据不同的功能划分模块
 app.use('/admin',require('./routers/admin'));
 app.use('/users',require('./routers/user'));
 app.use('/api',require('./routers/api'));
 app.use('/',require('./routers/main'));
-
 mongoose.Promise = global.Promise;
 //监听http请求
 mongoose.connect("mongodb://localhost:27018/blog",function(err){

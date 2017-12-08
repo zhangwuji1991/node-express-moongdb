@@ -48,7 +48,7 @@ function renderComment(){
 	}else{
 		var html = '';
 		for (var i= star;  i < end ; i++) {
-			html += '<div class="panel panel-default"><div class="panel-body" style="text-align: left;"><p>作者:'+comment[i].username+'<span></span><span>&nbsp&nbsp&nbsp</span>时间:'+getDate(comment[i].postTime)+'<span></span></p></div><div style="text-align: left;" class="panel-footer">'+comment[i].content+'</div></div>'
+			html += '<div class="panel panel-default"><div class="panel-body" style="text-align: left;"><p><img class="plimg" src="'+comment[i].headImg+'" alt=""></p><p>作者:'+comment[i].username+'<span></span><span>&nbsp&nbsp&nbsp</span>时间:'+getDate(comment[i].postTime)+'<span></span></p></div><div style="text-align: left;" class="panel-footer">'+comment[i].content+'</div></div>'
 		};
 		$('#comments').html(html);
 	}	

@@ -55,11 +55,12 @@ router.post('/user/register',function(req,res,next){
 	}).then(function(newuserInfo){
 		// console.log(newuserInfo)
 		responseData.message="注册成功!";
-
+		
 		//设置cookise 
 		req.cookies.set('userInfo',JSON.stringify({
 			_id: newuserInfo.id,
-			username: newuserInfo.username
+			username: newuserInfo.username,
+			headImg: 'https://avatars0.githubusercontent.com/u/19239161?s=40&v=4'
 		}))
 	    res.json(responseData);
 	    return;
@@ -109,10 +110,12 @@ router.get('/user/logout',function(req,res){
 })
 //获取所有评论接口
 router.get('/comment',function(req,res){
-	var id = req.query.contentid || ''
+	var id = req.query.contentid || '';
+
 	Content.findOne({
 		_id:id
 	}).then(function(content){
+		console.log(content)
 		responseData.code=1;
 		responseData.message="获取所有的文章评论";
 		responseData.data=content.comments
@@ -121,19 +124,28 @@ router.get('/comment',function(req,res){
 })
 //评论提交
 router.post('/comment/post',function(req,res){
-	console.log(req.body.contentid )
+	// console.log(req.body.contentid )
 	var contentId = req.body.contentid || ''
-	console.log(contentId)
+	// console.log(contentId)
 	var postData = {
 		username:req.userInfo.username,
 		postTime: new Date(),
-		content:req.body.content
-	}
+		content:req.body.content,
+		headImg:''
+	};
+    User.findOne({
+        username:req.userInfo.username
+    }).then(function (users) {
+        console.log(users.headImg)
+		 postData.headImg =users.headImg
+		console.log(postData.headImg)
+    })
+	console.log(postData)
 	//查询当前这篇内容的信息
 	Content.findOne({
 		_id: contentId
 	}).then(function(content){
-		console.log(content)
+		// console.log(content)
 		content.comments.push(postData);
 		return content.save();
 	}).then(function(newContent){
