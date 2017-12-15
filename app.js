@@ -19,7 +19,7 @@ app.engine('html',swig.renderFile);
 // 设置模板文件存放的目录
 // 第一个参数必须是views 第二个参数是目录
 app.set('views','./views');
-// 注册所使用的模板引擎，第一个vans必须是 view engine 第二个参数等同于模板引擎的第一个参数
+// 注册所使用的模板引擎，第一个参数必须是 view engine 第二个参数等同于模板引擎的第一个参数
 app.set('view engine','html')
 // 在开发过程中，需要取消模板缓存
 swig.setDefaults({cache: false})
@@ -29,7 +29,7 @@ swig.setDefaults({cache: false})
 // next: 函数 
 // app.get('/',function(req,res,next){
 // 	// res.send('<h1>欢迎来到我的博客</h1>')
-// 	// 读取views目录下的文件  解析并返回给客服端
+// 	// 读取views目录下的文件  解析并返回给客服端e
 // 	res.render('index')
 // })
 // bodyparser设置
@@ -54,7 +54,6 @@ app.use(function(req,res,next){
 		next();
 	}
 })
-//app.js
 //设置跨域第一种方式
 // app.all('*', function(req, res, next) {
 //     res.header("Access-Control-Allow-Origin", "*");
@@ -65,7 +64,6 @@ app.use(function(req,res,next){
 //     next();
 // });
 //设置跨域第二种方式
-//app.js
 var cors = require('cors');
 app.use(cors());
 // 根据不同的功能划分模块

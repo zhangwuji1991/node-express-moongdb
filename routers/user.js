@@ -20,13 +20,6 @@ router.get('/',function(req,res,next){
 })
 //账户中心
 router.get('/user',function(req,res,next){
-	//查询用户账号及密码
-	user.findOne({
-		username: req.userInfo.username
-	}).then(function(users){
-		// console.log(users.password)
-	})
-
 	res.render('user/user',{
 		userInfo: req.userInfo
 	})
@@ -43,7 +36,6 @@ router.get('/tp',function(req,res,next){
         })
     })
 })
-
 // 获取上传图片保存到其他地方
 var storage = multer.diskStorage({
     //保存地址
