@@ -1,8 +1,19 @@
 var express  = require('express');
 var router   = express.Router();
-var User     = require('../models/User')
-var Category = require('../models/category')
-var Content = require('../models/Content')
+var User     = require('../models/User');
+var Category = require('../models/category');
+var Content = require('../models/Content');
+var Bz = require('../models/bz');
+var multer = require('multer');
+var path   = require('path')
+// 设置统一返回格式
+router.use(function(req,res,next){
+    responseData = {
+        code:0,
+        message:''
+    }
+    next();
+})
 router.use(function(req,res,next){
 	if(!req.userInfo.isAdmin){
 		//如果当前用户不是管理员
@@ -310,5 +321,67 @@ router.get('/content/delete',function(req,res){
 			url:'/admin/content'
 	    })
 	})
+});
+
+
+var storage = multer.diskStorage({
+    //保存地址
+    destination: function (req, file, cb) {
+        cb(null, path.resolve('public/bzimg'));
+    },
+    //文件名
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+var upload = multer({storage: storage});
+
+
+// var upload = multer({ dest:  "/home/nodejs/multertest/temp" });
+//获取上传壁纸
+router.post('/bz/bzadd', upload.single('avatar'),function (req,res,next) {
+
+    console.log(req.file);
+    console.log(req.body);
+    //保存数据
+	return new Bz({
+        addTime: Date.now(),
+        content: req.body.content,
+        bzImg: '/public/bzimg/' + path.basename(req.file.path)
+	}).save().then(function (bzs) {
+        res.render('admin/success',{
+            userInfo:req.userInfo,
+            message:'壁纸信息上传成功',
+            url:'/admin/bz'
+        })
+    })
+
+
+
+
+
 })
+
+//壁纸设置
+router.get('/bz',function (req,res,next) {
+    Bz.find().sort({_id:-1}).then(function (bz) {
+    	console.log(bz)
+        res.render('admin/bz',{
+            userInfo: req.userInfo,
+            bzimg: bz
+        })
+    })
+
+})
+
+//壁纸设置
+router.get('/bz/add',function (req,res,next) {
+
+    res.render('admin/bzadd',{
+        userInfo: req.userInfo
+	})
+});
+
+
+
 module.exports = router;

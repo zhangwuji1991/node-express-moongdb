@@ -96,5 +96,15 @@ router.post('/update',function(req,res,next){
 	})
 });
 
+//壁纸设置
+router.get('/bz',function (req,res,next) {
+	res.render('user/bz')
+})
+
+//壁纸设置
+router.get('/bzadd',function (req,res,next) {
+    res.render('user/bzadd')
+})
+
 //发表博客
 module.exports = router;
