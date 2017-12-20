@@ -1,6 +1,7 @@
 var express = require('express');
 var router  = express.Router();
 var User    = require('../models/User');
+var Bz      = require('../models/bz')
 var Content    = require('../models/Content');
 var responseData;
 // 设置统一返回格式
@@ -153,5 +154,15 @@ router.post('/comment/post',function(req,res){
 		responseData.data=newContent
 		res.json(responseData);
 	})
+})
+
+//返回所所有的壁纸信息
+router.post('/bzdata',function (req,res,next) {
+    Bz.find().then(function (bzdata) {
+        responseData.code=1;
+        responseData.message="获取所有壁纸";
+        responseData.data=bzdata
+        res.json(responseData);
+    })
 })
 module.exports = router;

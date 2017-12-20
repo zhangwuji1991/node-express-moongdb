@@ -1,4 +1,8 @@
 //壁纸
+window.onload=function (ev) {
+    $('#bzcity').val(remote_ip_info.city+"市")
+    // $('#bzcity').attr("name",remote_ip_info.city+"市")
+}
 function Submitbz() {
     $.ajax({
         type:'POST',
@@ -38,3 +42,10 @@ $('#sumbitbz').on('click',function () {
     console.log(1)
     Submitbz()
 })
+
+//预览大图
+// $('.yldt').on('click',function () {
+//     alert($(this).attr("src"));
+// })
+
+$('.yldt').zoomify();

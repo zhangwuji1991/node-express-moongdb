@@ -7,6 +7,7 @@ module.exports = new mongoose.Schema({
         type:Date,
         default:new Date()
     },
+    city:String,
     //内容
     content: String,
     //壁纸
