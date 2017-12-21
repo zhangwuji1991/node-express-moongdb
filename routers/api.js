@@ -158,7 +158,7 @@ router.post('/comment/post',function(req,res){
 
 //返回所所有的壁纸信息
 router.post('/bzdata',function (req,res,next) {
-    Bz.find().then(function (bzdata) {
+    Bz.find({"city":"杭州市",}).sort({_id:-1}).then(function (bzdata) {
         responseData.code=1;
         responseData.message="获取所有壁纸";
         responseData.data=bzdata

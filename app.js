@@ -22,7 +22,8 @@ app.set('views','./views');
 // 注册所使用的模板引擎，第一个参数必须是 view engine 第二个参数等同于模板引擎的第一个参数
 app.set('view engine','html')
 // 在开发过程中，需要取消模板缓存
-swig.setDefaults({cache: false})
+swig.setDefaults({cache: false});
+swig.setDefaults({ autoescape: false });  //将富文本编译器中的字符串转为标签  https://www.mgenware.com/blog/?p=2576
 // 首页
 // res:  resonpe对象
 // req:  request对象

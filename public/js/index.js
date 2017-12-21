@@ -72,4 +72,11 @@ $('#logout').on('click',function(){
 	});
 })
 
-
+// 文本编辑器
+$(function(){
+    $('.summernote').summernote({
+        height: 200,
+        tabsize: 2,
+        lang: 'zh-CN'
+    });
+});
