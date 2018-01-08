@@ -46,3 +46,24 @@ function handle() {
         }
     })
 };
+
+//上传个人信息
+$('#userinfos').on('click',function () {
+    $.ajax({
+        type:"post",
+        url:"/users/userinfos",
+        async:true,
+        dataType:'json',
+        data:{
+            nc:$('#nc').val(),
+            zw:$('#zw').val(),
+            gs:$('#gs').val(),
+            jb:$('#jb').val(),
+            jj:$('#jj').val(),
+            phone:$('#phone').val()
+        },
+        success:function(result) {
+            console.log(result)
+        }
+    });
+})

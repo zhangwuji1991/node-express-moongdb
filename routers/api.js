@@ -69,6 +69,7 @@ router.post('/user/register',function(req,res,next){
 })
 // 登录路由
 router.post('/user/login',function(req,res){
+	// console.log(req.body)
 	var username   = req.body.username;
 	var password   = req.body.password;
 
@@ -82,6 +83,7 @@ router.post('/user/login',function(req,res){
 		username:username,
 		password:password
 	}).then(function(userInfo){
+		// console.log(userInfo)
 		if(!userInfo){
 		  responseData.code=2;
 		  responseData.message="用户或密码错误";
@@ -92,7 +94,9 @@ router.post('/user/login',function(req,res){
 		responseData.message="登录成功";
 		responseData.userInfo={
 			_id: userInfo.id,
-			username: userInfo.username
+			username: userInfo.username,
+			headImg:userInfo.headImg
+
 		};
 		// 设置cookise 
 		req.cookies.set('userInfo',JSON.stringify({
@@ -164,5 +168,60 @@ router.post('/bzdata',function (req,res,next) {
         responseData.data=bzdata
         res.json(responseData);
     })
+});
+
+//返回接口给博客  vue
+router.post('/users',function (req,res,next) {
+
+         var str="";
+		 var datas = "";
+
+			var pages = 0; //设置总页数
+	     req.on("data",function(chunk){
+			  str+=chunk
+		 });
+         req.on("end",function(){
+         	console.log(str)
+             datas = JSON.parse(str).username;
+             var page  = JSON.parse(str).page;  //当前条数
+             var limit = JSON.parse(str).pages;
+
+             User.count().then(function(count){
+                 pages = Math.ceil(count/limit);
+                 //取值不能超过pages
+                 page = Math.min(page,pages)
+                 //取值不能小于1
+                 page = Math.max(page,1)
+                 var skip  = (page - 1)*limit;
+
+                 if(datas){
+                     User.find({"username":datas}).then(function(categories){
+                         responseData.code=1;
+                         responseData.message="ddd";
+                         responseData.data=categories;
+                         responseData.lengths = 1;
+                         res.json(responseData);
+                     })
+                 }else {
+                     User.find().sort({_id:-1}).limit(limit).skip(skip).then(function(categories){
+
+                         responseData.code=1;
+                         responseData.message="ddd";
+                         responseData.data=categories;
+                         responseData.lengths = count;
+                         res.json(responseData);
+                     })
+                 }
+             })
+
+
+		 });
+
+
 })
+
+
+
+
+
 module.exports = router;

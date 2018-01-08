@@ -35,6 +35,7 @@ swig.setDefaults({ autoescape: false });  //将富文本编译器中的字符串
 // })
 // bodyparser设置
 app.use(bodyParser.urlencoded({extended: true}));
+// app.use(bodyParser.json());
 // //设置cookies
 app.use(function(req,res,next){
 	req.cookies = new Cookies(req,res);
@@ -67,6 +68,7 @@ app.use(function(req,res,next){
 //设置跨域第二种方式
 var cors = require('cors');
 app.use(cors());
+
 // 根据不同的功能划分模块
 app.use('/admin',require('./routers/admin'));
 app.use('/users',require('./routers/user'));

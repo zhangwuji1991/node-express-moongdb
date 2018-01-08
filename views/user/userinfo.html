@@ -1,0 +1,37 @@
+{% extends 'layout.html' %}
+{% block main%}
+<h3>用户信息</h3>
+
+<div class="form-group">
+    <label for="exampleInputEmail1">昵称</label>
+    <input type="input" class="form-control"  id="nc" value="{{jl.nc}}" placeholder="请输入昵称">
+</div>
+<div class="form-group">
+    <label for="exampleInputPassword1">职位</label>
+    <input type="text" class="form-control" id="zw" value="{{jl.zw}}" placeholder="请输入职位">
+</div>
+<div class="form-group">
+    <label for="exampleInputPassword1">公司</label>
+    <input type="password" class="form-control" id="gs" value="{{js.gs}}" placeholder="输入公司">
+</div>
+<div class="form-group">
+    <label for="exampleInputPassword1">工作级别</label>
+    <select class="form-control" name="category" id="jb">
+        <option value ="初级">初级</option>
+        <option value ="初级">中级</option>
+        <option value ="初级">高级</option>
+    </select>
+</div>
+<div class="form-group">
+    <label for="exampleInputPassword1">个人简介</label>
+    <input type="password" class="form-control" id="jj" value="{{jl.jj}}" placeholder="输入个人简介">
+</div>
+<div class="form-group">
+    <label for="exampleInputPassword1">手机号</label>
+    <input type="password" class="form-control" value="{{jl.phone}}" id="phone" placeholder="输入手机号">
+</div>
+
+<!-- <button type="button" class="btn btn-default" id="udpass">修改</button>  -->
+<p style="margin-top: 15px;"><span class="label label-default " id="cwts"></span></p>
+<button type="button" class="btn btn-default" id="userinfos" data-toggle="popover" title="提示" data-content="And here's some amazing content. It's "very engaging. Right?>提交</button>
+{% endblock %}

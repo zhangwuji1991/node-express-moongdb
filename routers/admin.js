@@ -55,7 +55,14 @@ router.get('/user',function(req,res,netx){
 			pages:pages,
 			limit:limit,
 			urls:'/admin/user'
-		  })
+		  });
+			responseData.message="登录成功";
+			responseData.userInfo={
+				_id: userInfo.id,
+				username: userInfo.username,
+				headImg:userInfo.headImg
+
+			};
 	   })	
 	})	
 })

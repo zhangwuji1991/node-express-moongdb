@@ -3,6 +3,7 @@ var router   = express.Router();
 var user = require('../models/User');
 var multer = require('multer');
 var path = require('path');
+var Jl   = require('../models/jl')
 // 设置统一返回格式
 router.use(function(req,res,next){
 	responseData = {
@@ -96,15 +97,49 @@ router.post('/update',function(req,res,next){
 	})
 });
 
-//壁纸设置
-router.get('/bz',function (req,res,next) {
-	res.render('user/bz')
+//用户资料
+router.get('/userdata',function (req,res,next) {
+	console.log(req.userInfo._id)
+	Jl.findOne({
+		user:req.userInfo._id
+	}).populate('user').then(function (jl) {
+		console.log(jl)
+        res.render('user/userinfo',{
+        	jl:jl
+		})
+    })
+
 })
 
-//壁纸设置
-router.get('/bzadd',function (req,res,next) {
-    res.render('user/bzadd')
+//保存用户资料
+router.post('/userinfos',function (req,res,next) {
+	Jl.find().then(function (data) {
+		if(data == ""){
+			//保存数据
+			 new Jl({
+				user:req.userInfo,
+				nc: req.body.nc,
+				zw: req.body.zw,
+				gs: req.body.gs,
+				jb: req.body.jb,
+			    jj: req.body.jj,
+				phone: req.body.phone
+			}).save().then(function () {
+                 responseData.code= 0;
+                 responseData.message="简历保存成功"
+                 res.json(responseData);
+                 return;
+             })
+
+		}
+    })
+	console.log(req.body)
 })
+
+
+
+//壁纸设置
+
 
 //发表博客
 module.exports = router;
