@@ -73,6 +73,7 @@ app.use(cors());
 app.use('/admin',require('./routers/admin'));
 app.use('/users',require('./routers/user'));
 app.use('/api',require('./routers/api'));
+app.use('/vue',require('./routers/vue'));
 app.use('/',require('./routers/main'));
 mongoose.Promise = global.Promise;
 //监听http请求

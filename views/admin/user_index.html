@@ -12,6 +12,7 @@
 		<th>用户名</th>
 		<th>密码</th>
 		<th>是否为管理员</th>
+		<th>注册时间</th>
 	</tr>
 	{% for user in users %}
 	<tr>
@@ -25,6 +26,7 @@
 			否
 			{% endif %}
 		</td>
+		<td>{{user.registerDate|date('Y年m月d日 H:i:s',-60*8)}}</td>
 	</tr>
 	{% endfor%}
 </table>

@@ -69,7 +69,7 @@ router.post('/user/register',function(req,res,next){
 })
 // 登录路由
 router.post('/user/login',function(req,res){
-	// console.log(req.body)
+	console.log(req.body)
 	var username   = req.body.username;
 	var password   = req.body.password;
 
@@ -162,6 +162,8 @@ router.post('/comment/post',function(req,res){
 
 //返回所所有的壁纸信息
 router.post('/bzdata',function (req,res,next) {
+	// console.log(req.rawHeaders)
+    console.log(req.rawHeaders[13])  //获取请求的ip地址
     Bz.find({"city":"杭州市",}).sort({_id:-1}).then(function (bzdata) {
         responseData.code=1;
         responseData.message="获取所有壁纸";
@@ -169,59 +171,6 @@ router.post('/bzdata',function (req,res,next) {
         res.json(responseData);
     })
 });
-
-//返回接口给博客  vue
-router.post('/users',function (req,res,next) {
-
-         var str="";
-		 var datas = "";
-
-			var pages = 0; //设置总页数
-	     req.on("data",function(chunk){
-			  str+=chunk
-		 });
-         req.on("end",function(){
-         	console.log(str)
-             datas = JSON.parse(str).username;
-             var page  = JSON.parse(str).page;  //当前条数
-             var limit = JSON.parse(str).pages;
-
-             User.count().then(function(count){
-                 pages = Math.ceil(count/limit);
-                 //取值不能超过pages
-                 page = Math.min(page,pages)
-                 //取值不能小于1
-                 page = Math.max(page,1)
-                 var skip  = (page - 1)*limit;
-
-                 if(datas){
-                     User.find({"username":datas}).then(function(categories){
-                         responseData.code=1;
-                         responseData.message="ddd";
-                         responseData.data=categories;
-                         responseData.lengths = 1;
-                         res.json(responseData);
-                     })
-                 }else {
-                     User.find().sort({_id:-1}).limit(limit).skip(skip).then(function(categories){
-
-                         responseData.code=1;
-                         responseData.message="ddd";
-                         responseData.data=categories;
-                         responseData.lengths = count;
-                         res.json(responseData);
-                     })
-                 }
-             })
-
-
-		 });
-
-
-})
-
-
-
 
 
 module.exports = router;

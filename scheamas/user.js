@@ -10,8 +10,15 @@ module.exports = new mongoose.Schema({
 		type: Boolean,
 		default: false
 	},
+	//头像
 	headImg: {
         type: String,
         default: ''
-    }
+    },
+	//注册日期
+	registerDate:{
+		type: String,
+		default:''
+	}
+
 })
