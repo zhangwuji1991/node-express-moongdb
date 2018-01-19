@@ -1,6 +1,9 @@
 var express = require('express');
 var router  = express.Router();
 var User    = require('../models/User');
+var Bz    = require('../models/bz');
+var multer = require('multer');
+var path   = require('path')
 var responseData;
 // 设置统一返回格式
 router.use(function(req,res,next){
@@ -17,12 +20,7 @@ router.post('/login',function(req,res){
     var username   = req.body.username;
     var password   = req.body.password;
 
-    if(username == '' || password == ''){
-        responseData.code = 1;
-        responseData.message='用户名或密码不能为空'
-        res.json(responseData);
-        return;
-    }
+
     User.findOne({
         username:username,
         password:password
@@ -53,6 +51,7 @@ router.post('/login',function(req,res){
 })
 //返回接口给博客  vue
 router.post('/users',function (req,res,next) {
+    console.log(req.body)
     var pages = 0; //设置总页数
     var datas = req.body.username;
     var page  = req.body.page;  //当前条数
@@ -155,6 +154,82 @@ router.post('/adduser',function (req,res,next) {
 
 
         }
+    })
+});
+
+//壁纸接口
+router.post('/bzdata',function (req,res,next) {
+
+    var pages = 0; //设置总页数
+    var datas = req.body.city;
+    var page  = req.body.page;  //当前条数
+    var limit = parseInt(req.body.pages);//前端设置的每页显示的条数；
+    Bz.count().then(function(count){
+        pages = Math.ceil(count/limit);
+        //取值不能超过pages
+        page = Math.min(page,pages)
+        //取值不能小于1
+        page = Math.max(page,1)
+        var skip  = (page - 1)*limit;
+        if(datas){
+            Bz.find({"city":datas}).then(function(categories){
+                responseData.code=1;
+                responseData.message="ddd";
+                responseData.data=categories;
+                responseData.lengths = 1;
+                res.json(responseData);
+            })
+        }else {
+            Bz.find().sort({_id:-1}).limit(limit).skip(skip).then(function(categories){
+                responseData.code=1;
+                responseData.message="ddds";
+                responseData.data=categories;
+                responseData.lengths = count;
+                res.json(responseData);
+            })
+        }
+        //为博客返回接口
+        if(req.body.vue){
+            Bz.find().sort({_id:-1}).then(function(categories){
+                responseData.code=1;
+                responseData.message="ddds";
+                responseData.data=categories;
+                responseData.lengths = count;
+                res.json(responseData);
+            })
+        }
+    })
+});
+
+//上传图片
+var storage = multer.diskStorage({
+    //保存地址
+    destination: function (req, file, cb) {
+        cb(null, path.resolve('public/bzimg'));
+    },
+    //文件名
+    filename: function (req, file, cb) {
+        cb(null, Date.now() + path.extname(file.originalname));
+    }
+});
+var upload = multer({storage: storage});
+//上传壁纸
+router.post('/bzadd',upload.single('avatar'),function (req,res,next) {
+    cost = bzImg = '/public/bzimg/' + path.basename(req.file.path)
+    responseData.data=bzImg;
+    res.json(responseData);
+})
+
+router.post('/bzadds',function (req,res,next) {
+    return new Bz({
+        addTime: Date.now(),
+        city:req.body.city,
+        content: req.body.content,
+        bzImg: req.body.imgurl
+    }).save().then(function (bzs) {
+        responseData.code=1;
+        responseData.message="保存成功";
+        res.json(responseData);
     })
 })
 module.exports = router;
