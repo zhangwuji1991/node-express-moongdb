@@ -3,7 +3,11 @@ var router  = express.Router();
 var User    = require('../models/User');
 var Bz    = require('../models/bz');
 var multer = require('multer');
-var path   = require('path')
+var path   = require('path');
+//获取项目工程里的图片
+var fs = require('fs');//引用文件系统模块
+var image = require("imageinfo"); //引用imageinfo模块
+
 var responseData;
 // 设置统一返回格式
 router.use(function(req,res,next){
@@ -16,7 +20,7 @@ router.use(function(req,res,next){
 
 // 登录路由
 router.post('/login',function(req,res){
-    console.log(req.body)
+    // console.log(req.body)
     var username   = req.body.username;
     var password   = req.body.password;
 
@@ -51,7 +55,7 @@ router.post('/login',function(req,res){
 })
 //返回接口给博客  vue
 router.post('/users',function (req,res,next) {
-    console.log(req.body)
+    // console.log(req.body)
     var pages = 0; //设置总页数
     var datas = req.body.username;
     var page  = req.body.page;  //当前条数
@@ -114,7 +118,7 @@ router.post("/edituser",function (req,res,next) {
 
 //删除用户
 router.post('/deluser',function (req,res,next) {
-    console.log(req.body)
+    // console.log(req.body)
     var Id = req.body.id;
     User.remove({
         _id:Id
@@ -133,7 +137,7 @@ router.post('/adduser',function (req,res,next) {
     User.findOne({
         username:Username
     }).then(function (users) {
-        console.log(users)
+        // console.log(users)
         if(users){
             responseData.code = 0;
             responseData.message = "用户名存在"
@@ -220,6 +224,7 @@ router.post('/bzadd',upload.single('avatar'),function (req,res,next) {
     res.json(responseData);
 })
 
+//添加壁纸
 router.post('/bzadds',function (req,res,next) {
     return new Bz({
         addTime: Date.now(),
@@ -231,5 +236,55 @@ router.post('/bzadds',function (req,res,next) {
         responseData.message="保存成功";
         res.json(responseData);
     })
+});
+function readFileList(path, filesList) {
+    var files = fs.readdirSync(path);
+    files.forEach(function (itm, index) {
+        var stat = fs.statSync(path + itm);
+        if (stat.isDirectory()) {
+            //递归读取文件
+            readFileList(path + itm + "/", filesList)
+        } else {
+            var obj = {};//定义一个对象存放文件的路径和名字
+            obj.path = path;//路径
+            obj.filename = itm//名字
+            obj.pahts = path+itm//名字
+            filesList.push(obj);
+        }
+    })
+}
+
+//获取当前已经上传的所有图片路径,对部分图片进行删除操作
+var getFiles = {
+    //获取文件夹下的所有文件
+    getFileList: function (path) {
+        this.filesList = [];
+        readFileList(path, this.filesList);
+        // console.log(this.filesList)
+        return this.filesList;
+    },
+    //获取文件夹下的所有图片
+    getImageFiles: function (path) {
+        var imageList = [];
+        this.getFileList(path).forEach((item) => {
+            var ms = image(fs.readFileSync(item.path + item.filename));
+            ms.mimeType && (imageList.push(item.filename))
+         });
+        return imageList;
+    }
+};
+//获取文件夹下的所有图片
+router.post('/imgs',function (req,res,next) {
+    getFiles.getImageFiles("./public/bzimg/");
+    responseData.code=1;
+    responseData.message="保存成功";
+    responseData.data= getFiles.filesList
+    res.json(responseData);
+});
+
+//删除服务器上的图片
+router.post('/deleimgs',function (req,res,next) {
+
 })
+
 module.exports = router;
