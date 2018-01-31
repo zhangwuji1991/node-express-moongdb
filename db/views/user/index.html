@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+
+{% block main%}
+ <div class="jumbotron">
+     <h1>Hello, {{userInfo.username}}</h1>
+     <p>欢迎进入个人中心</p>
+     <img src="{{user.headImg}}" alt="">
+  </div>
+{% endblock %}

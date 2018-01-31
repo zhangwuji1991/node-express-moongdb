@@ -1,0 +1,38 @@
+{% extends 'layout.html' %}
+{% block main%}
+<ol class="breadcrumb">
+    <li><a href="/admin">壁纸首页</a></li>
+    <li><span>壁纸列表</span></li>
+</ol>
+<h3>分类列表</h3>
+<table class="table table-hover table-bordered bz">
+    <tr>
+        <th>Id</th>
+        <th>地点</th>
+        <th>描述</th>
+        <th>图片</th>
+        <th>添加时间</th>
+    </tr>
+    {% for bzmings in bzimg %}
+    <tr>
+        <td>{{bzmings._id.toString()}}</td>
+        <td>{{bzmings.city}}</td>
+        <td>{{bzmings.content}}</td>
+        <td><img src="{{bzmings.bzImg}}"  class="yldt" alt="" title="点开查看大图" style="cursor: pointer;" ></td>
+        <td>{{bzmings.addTime|date('Y年m月d日 H:i:s',-60*8)}}</td>
+    </tr>
+    {% endfor %}
+</table>
+{% include 'page.html' %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+

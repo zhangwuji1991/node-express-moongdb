@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block main%}
+<div class="jumbotron">
+    <h1>Hello, {{userInfo.username}}</h1>
+    <p>上传壁纸</p>
+</div>
+<form action="/admin/bz/bzadd" method="post"  enctype="multipart/form-data">
+    <!--<input type="file" name="avatar" /><br/>-->
+    <!--<input type="text" name="aaaa" /><br/>-->
+    <!--<input type="text" name="bbb" /><br/>-->
+    <!--<input type="submit" value="submit"/><br/>-->
+<div class="form-group">
+    <label for="exampleInputEmail1">所在城市</label>
+    <input type="text" class="form-control" name="city" id="bzcity"  readonly = "readonly">
+</div>
+<div class="form-group">
+    <label for="exampleInputEmail1">想说点啥，就整点啥吧！</label>
+    <input type="text" class="form-control" name="content" id="contenbz" placeholder="留下你的心情">
+</div>
+<div class="form-group">
+    <label for="exampleInputFile">上传精美壁纸</label>
+    <input type="file" id="bzimg" name="avatar">
+    <p class="help-block">莫道君行早，踏遍青山人未老。</p>
+</div>
+<button type="submit" class="btn btn-success"  id="">提交</button>
+</form>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends 'layout.html' %}
+
+{% block main%}
+<div class="jumbotron">
+    <h1>Hello, {{userInfo.username}}</h1>
+    <p>上传图片</p>
+    个人头像:<img src="{{user.headImg}}" id="tx" />
+</div>
+<form class="form-horizontal" enctype='multipart/form-data' method='post' action='javascript:;'>
+    <input type="file" id="choose"/>
+    <button onclick="handle()">上传</button>
+    <img class="newImg"/>
+</form>
+{% endblock %}
